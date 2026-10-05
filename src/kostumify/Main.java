@@ -8,19 +8,16 @@ package kostumify;
  *
  * @author asus
  */
-
-
 import java.util.Scanner;
 
 public class Main {
-    // MODUL 2 - SCANNER
+
     static Scanner input = new Scanner(System.in);
     static Kostum[] daftarKostum = new Kostum[100];
     static int jumlahData = 0;
 
     public static void main(String[] args) {
 
-        // MODUL 3 - OBJECT INSTANTIATION
         daftarKostum[jumlahData++] = new KostumTradisional(
                 "TRD001",
                 "Kebaya Jawa",
@@ -43,16 +40,6 @@ public class Main {
 
         daftarKostum[jumlahData++] = new KostumKarakter(
                 "KRT001",
-                "Kostum Naruto",
-                100000,
-                2,
-                "Baik",
-                "Naruto",
-                "L"
-        );
-
-        daftarKostum[jumlahData++] = new KostumKarakter(
-                "KRT002",
                 "Kostum Spiderman",
                 120000,
                 2,
@@ -62,7 +49,7 @@ public class Main {
         );
 
         daftarKostum[jumlahData++] = new KostumKarakter(
-                "KRT003",
+                "KRT002",
                 "Kostum Elsa",
                 110000,
                 3,
@@ -71,7 +58,16 @@ public class Main {
                 "M"
         );
 
-        // MODUL 2 - PERULANGAN
+        daftarKostum[jumlahData++] = new KostumAnime(
+                "ANM001",
+                "Kostum Naruto",
+                100000,
+                2,
+                "Baik",
+                "Naruto",
+                "Naruto Uzumaki"
+        );
+
         int pilihan;
 
         do {
@@ -82,7 +78,6 @@ public class Main {
             pilihan = input.nextInt();
             input.nextLine();
 
-         
             switch (pilihan) {
 
                 case 1:
@@ -98,24 +93,24 @@ public class Main {
                     break;
 
                 case 4:
-                    sewaKostum();
+                    simulasiDynamicBinding();
                     break;
 
                 case 5:
+                    sewaKostum();
+                    break;
+
+                case 6:
                     System.out.println();
-                    System.out.println(
-                            "Terima kasih telah menggunakan Kostumify!"
-                    );
+                    System.out.println("Terima kasih telah menggunakan Kostumify!");
                     break;
 
                 default:
                     System.out.println();
-                    System.out.println(
-                            "Pilihan menu tidak tersedia."
-                    );
+                    System.out.println("Pilihan menu tidak tersedia.");
             }
 
-        } while (pilihan != 5);
+        } while (pilihan != 6);
 
         input.close();
     }
@@ -123,60 +118,39 @@ public class Main {
     static void tampilkanMenu() {
 
         System.out.println();
-        System.out.println(
-                "=================================================="
-        );
-        System.out.println(
-                "                    KOSTUMIFY"
-        );
-        System.out.println(
-                "           Your Costume, Your Character"
-        );
-        System.out.println(
-                "=================================================="
-        );
-
+        System.out.println("==================================================");
+        System.out.println("                    KOSTUMIFY");
+        System.out.println("           Your Costume, Your Character");
+        System.out.println("==================================================");
         System.out.println("1. Tambah Data Kostum");
         System.out.println("2. Tampilkan Seluruh Kostum");
         System.out.println("3. Cari Kostum");
-        System.out.println("4. Sewa Kostum");
-        System.out.println("5. Keluar");
-
-        System.out.println(
-                "--------------------------------------------------"
-        );
-
-        // MODUL 4 - STATIC METHOD
+        System.out.println("4. Simulasi Dynamic Binding");
+        System.out.println("5. Sewa Kostum");
+        System.out.println("6. Keluar");
+        System.out.println("--------------------------------------------------");
         System.out.println(
                 "Total kostum terdaftar : "
                 + Kostum.getJumlahKostum()
         );
-
-        System.out.println(
-                "=================================================="
-        );
+        System.out.println("==================================================");
     }
 
     static void tambahKostum() {
 
         System.out.println();
-        System.out.println(
-                "----------- TAMBAH DATA KOSTUM -----------"
-        );
-
+        System.out.println("----------- TAMBAH DATA KOSTUM -----------");
         System.out.println("1. Kostum Tradisional");
         System.out.println("2. Kostum Karakter");
+        System.out.println("3. Kostum Anime");
 
         System.out.print("Pilih jenis kostum: ");
         int jenis = input.nextInt();
         input.nextLine();
 
-        if (jenis != 1 && jenis != 2) {
+        if (jenis < 1 || jenis > 3) {
 
-            System.out.println(
-                    "Jenis kostum tidak tersedia."
-            );
-
+            System.out.println("Jenis kostum tidak tersedia.");
             return;
         }
 
@@ -191,12 +165,12 @@ public class Main {
 
         System.out.print("Stok              : ");
         int stok = input.nextInt();
+
         input.nextLine();
 
         System.out.print("Kondisi           : ");
         String kondisi = input.nextLine();
 
-        // MODUL 2 : PERCABANGAN
         if (jenis == 1) {
 
             System.out.print("Asal daerah       : ");
@@ -205,8 +179,8 @@ public class Main {
             System.out.print("Jenis kelamin     : ");
             String jenisKelamin = input.nextLine();
 
-            daftarKostum[jumlahData++] =
-                    new KostumTradisional(
+            daftarKostum[jumlahData++]
+                    = new KostumTradisional(
                             kode,
                             nama,
                             harga,
@@ -217,11 +191,9 @@ public class Main {
                     );
 
             System.out.println();
-            System.out.println(
-                    "Kostum tradisional berhasil ditambahkan."
-            );
+            System.out.println("Kostum tradisional berhasil ditambahkan.");
 
-        } else {
+        } else if (jenis == 2) {
 
             System.out.print("Nama karakter     : ");
             String namaKarakter = input.nextLine();
@@ -229,8 +201,8 @@ public class Main {
             System.out.print("Ukuran kostum     : ");
             String ukuran = input.nextLine();
 
-            daftarKostum[jumlahData++] =
-                    new KostumKarakter(
+            daftarKostum[jumlahData++]
+                    = new KostumKarakter(
                             kode,
                             nama,
                             harga,
@@ -241,62 +213,63 @@ public class Main {
                     );
 
             System.out.println();
-            System.out.println(
-                    "Kostum karakter berhasil ditambahkan."
-            );
+            System.out.println("Kostum karakter berhasil ditambahkan.");
+
+        } else {
+
+            System.out.print("Nama anime        : ");
+            String namaAnime = input.nextLine();
+
+            System.out.print("Nama tokoh        : ");
+            String namaTokoh = input.nextLine();
+
+            daftarKostum[jumlahData++]
+                    = new KostumAnime(
+                            kode,
+                            nama,
+                            harga,
+                            stok,
+                            kondisi,
+                            namaAnime,
+                            namaTokoh
+                    );
+
+            System.out.println();
+            System.out.println("Kostum anime berhasil ditambahkan.");
         }
     }
-
 
     static void tampilkanSemuaKostum() {
 
         System.out.println();
-        System.out.println(
-                "=================================================="
-        );
-        System.out.println(
-                "              DAFTAR SELURUH KOSTUM"
-        );
-        System.out.println(
-                "=================================================="
-        );
+        System.out.println("==================================================");
+        System.out.println("              DAFTAR SELURUH KOSTUM");
+        System.out.println("==================================================");
 
         if (jumlahData == 0) {
 
-            System.out.println(
-                    "Belum ada data kostum."
-            );
+            System.out.println("Belum ada data kostum.");
 
         } else {
 
             for (int i = 0; i < jumlahData; i++) {
 
                 System.out.println();
-                System.out.println(
-                        "Data ke-" + (i + 1)
-                );
+                System.out.println("Data ke-" + (i + 1));
 
-                System.out.println(
-                        "--------------------------------------------------"
-                );
+                System.out.println("--------------------------------------------------");
 
                 daftarKostum[i].tampilkanInfo();
 
-                System.out.println(
-                        "--------------------------------------------------"
-                );
+                System.out.println("--------------------------------------------------");
             }
         }
     }
 
-   
     static void menuPencarian() {
 
         System.out.println();
-        System.out.println(
-                "--------------- CARI KOSTUM ----------------"
-        );
-
+        System.out.println("--------------- CARI KOSTUM ----------------");
         System.out.println("1. Cari berdasarkan nama");
         System.out.println("2. Cari berdasarkan nomor data");
 
@@ -304,37 +277,24 @@ public class Main {
         int pilihan = input.nextInt();
         input.nextLine();
 
-    
         if (pilihan == 1) {
 
-            System.out.print(
-                    "Masukkan nama kostum: "
-            );
+            System.out.print("Masukkan nama kostum: ");
 
             String nama = input.nextLine();
 
-            // MODUL 4 - OVERLOADING
             cariData(nama);
 
         } else if (pilihan == 2) {
 
-            System.out.print(
-                    "Masukkan nomor data: "
-            );
-
+            System.out.print("Masukkan nomor data: ");
             int nomor = input.nextInt();
-
-            // MODUL 4 - OVERLOADING
             cariData(nomor);
 
         } else {
-
-            System.out.println(
-                    "Pilihan tidak tersedia."
-            );
+            System.out.println("Pilihan tidak tersedia.");
         }
     }
-
 
     static void cariData(String nama) {
 
@@ -347,29 +307,18 @@ public class Main {
                     .equalsIgnoreCase(nama)) {
 
                 System.out.println();
-                System.out.println(
-                        "Kostum ditemukan:"
-                );
-
-                System.out.println(
-                        "--------------------------------------------------"
-                );
-
+                System.out.println("Kostum ditemukan:");
+                System.out.println("--------------------------------------------------");
                 daftarKostum[i].tampilkanInfo();
-
                 ditemukan = true;
             }
         }
 
         if (!ditemukan) {
 
-            System.out.println(
-                    "Kostum dengan nama tersebut tidak ditemukan."
-            );
+            System.out.println("Kostum dengan nama tersebut tidak ditemukan.");
         }
     }
-
-
 
     static void cariData(int nomorData) {
 
@@ -377,163 +326,129 @@ public class Main {
                 && nomorData <= jumlahData) {
 
             System.out.println();
-            System.out.println(
-                    "Kostum ditemukan:"
-            );
+            System.out.println("Kostum ditemukan:");
 
-            System.out.println(
-                    "--------------------------------------------------"
-            );
+            System.out.println("--------------------------------------------------");
 
             daftarKostum[nomorData - 1]
                     .tampilkanInfo();
 
         } else {
 
-            System.out.println(
-                    "Nomor data tidak tersedia."
-            );
+            System.out.println("Nomor data tidak tersedia.");
         }
     }
 
+    static void simulasiDynamicBinding() {
+
+        System.out.println();
+        System.out.println("--------- SIMULASI DYNAMIC BINDING ---------");
+        System.out.println("Pilih nomor data kostum:");
+
+        for (int i = 0; i < jumlahData; i++) {
+
+            System.out.println((i + 1) + ". " + daftarKostum[i].getNamaKostum());
+        }
+
+        System.out.print("Pilihan: ");
+        int nomor = input.nextInt();
+        input.nextLine();
+
+        if (nomor >= 1 && nomor <= jumlahData) {
+
+            Kostum kostumDipilih
+                    = daftarKostum[nomor - 1];
+
+            prosesKostum(kostumDipilih);
+
+        } else {
+
+            System.out.println("Nomor data tidak tersedia.");
+        }
+    }
+
+    static void prosesKostum(Kostum kostum) {
+
+        System.out.println();
+        System.out.println("Objek diterima oleh method prosesKostum().");
+        System.out.println("Tipe referensi: Kostum");
+        System.out.println();
+        System.out.println("Method tampilkanInfo() dipanggil:");
+
+        System.out.println("--------------------------------------------------");
+
+        kostum.tampilkanInfo();
+
+        System.out.println("--------------------------------------------------");
+
+        System.out.println("Java memanggil method sesuai objek aslinya.");
+    }
 
     static void sewaKostum() {
 
         System.out.println();
-        System.out.println(
-                "--------------- SEWA KOSTUM ----------------"
-        );
+        System.out.println("--------------- SEWA KOSTUM ----------------");
 
-        System.out.print(
-                "Masukkan kode kostum : "
-        );
-
+        System.out.print("Masukkan kode kostum : ");
         String kode = input.nextLine();
-
         Kostum kostum = cariDenganKode(kode);
 
         if (kostum == null) {
-
-            System.out.println(
-                    "Kode kostum tidak ditemukan."
-            );
-
+            System.out.println("Kode kostum tidak ditemukan.");
             return;
         }
+
         System.out.println();
-        System.out.println(
-                "Kostum yang dipilih:"
-        );
-
-        System.out.println(
-                "--------------------------------------------------"
-        );
-
+        System.out.println("Kostum yang dipilih:");
+        System.out.println("--------------------------------------------------");
         kostum.tampilkanInfo();
+        System.out.println("--------------------------------------------------");
 
-        System.out.println(
-                "--------------------------------------------------"
-        );
-
-        System.out.print(
-                "Jumlah hari sewa     : "
-        );
-
+        System.out.print("Jumlah hari sewa     : ");
         int hari = input.nextInt();
 
-        System.out.print(
-                "Jumlah kostum        : "
-        );
-
+        System.out.print("Jumlah kostum        : ");
         int jumlah = input.nextInt();
+
         input.nextLine();
 
         if (hari <= 0 || jumlah <= 0) {
-
-            System.out.println(
-                    "Jumlah hari dan jumlah kostum harus lebih dari 0."
-            );
-
+            System.out.println("Jumlah hari dan jumlah kostum " + "harus lebih dari 0.");
             return;
         }
 
         if (jumlah > kostum.getStok()) {
 
             System.out.println();
-            System.out.println(
-                    "Stok tidak mencukupi."
-            );
-
-            System.out.println(
-                    "Stok tersedia : "
-                    + kostum.getStok()
-            );
+            System.out.println("Stok tidak mencukupi.");
+            System.out.println("Stok tersedia : " + kostum.getStok());
 
             return;
         }
 
-        double total =
-                kostum.hitungSewa(hari, jumlah);
+        double total = kostum.hitungSewa(
+                hari,
+                jumlah);
 
-
-        kostum.setStok(
-                kostum.getStok() - jumlah
-        );
+        kostum.setStok(kostum.getStok() - jumlah);
 
         System.out.println();
-        System.out.println(
-                "=================================================="
-        );
-        System.out.println(
-                "                 DETAIL SEWA"
-        );
-        System.out.println(
-                "=================================================="
-        );
-
-        System.out.println(
-                "Nama Kostum   : "
-                + kostum.getNamaKostum()
-        );
-
-        System.out.printf(
-                "Harga/Hari    : Rp%.0f%n",
-                kostum.getHargaSewa()
-        );
-
-        System.out.println(
-                "Jumlah Hari   : " + hari
-        );
-
-        System.out.println(
-                "Jumlah Kostum : " + jumlah
-        );
-
-        System.out.println(
-                "Stok Sisa     : " + kostum.getStok()
-        );
-
-        System.out.println(
-                "--------------------------------------------------"
-        );
-
-        System.out.printf(
-                "TOTAL BIAYA   : Rp%.0f%n",
-                total
-        );
-
-        System.out.println(
-                "=================================================="
-        );
-
-        System.out.println(
-                "Penyewaan berhasil!"
-        );
+        System.out.println("==================================================");
+        System.out.println("                 DETAIL SEWA");
+        System.out.println("==================================================");
+        System.out.println("Nama Kostum   : " + kostum.getNamaKostum());
+        System.out.printf("Harga/Hari    : Rp%.0f%n", kostum.getHargaSewa());
+        System.out.println("Jumlah Hari   : " + hari);
+        System.out.println("Jumlah Kostum : " + jumlah);
+        System.out.println("Stok Sisa     : " + kostum.getStok());
+        System.out.println("--------------------------------------------------");
+        System.out.printf("TOTAL BIAYA   : Rp%.0f%n", total);
+        System.out.println("==================================================");
+        System.out.println("Penyewaan berhasil!");
     }
 
     static Kostum cariDenganKode(String kode) {
 
-        // MODUL 2 - FOR LOOP
         for (int i = 0; i < jumlahData; i++) {
 
             if (daftarKostum[i]

@@ -93,7 +93,6 @@ public class Kostum {
         return jumlahKostum;
     }
 
-    // MODUL 3 - METHOD
     public void tampilkanInfo() {
 
         System.out.println("Kode       : " + kodeKostum);
