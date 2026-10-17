@@ -374,21 +374,25 @@ public class Main {
         System.out.println("Tipe referensi: Kostum");
         System.out.println();
         System.out.println("Method tampilkanInfo() dipanggil:");
-
         System.out.println("--------------------------------------------------");
-
         kostum.tampilkanInfo();
-
         System.out.println("--------------------------------------------------");
-
+        
+        kostum.tampilkanJenisKostum();
+        if (kostum instanceof dapatDisewa){
+            ((dapatDisewa) kostum).prosesSewa();
+        }
+        if (kostum instanceof dapatDinilai){
+            ((dapatDinilai)kostum).beriPenilaian();
+        }
         System.out.println("Java memanggil method sesuai objek aslinya.");
+    
     }
 
     static void sewaKostum() {
 
         System.out.println();
         System.out.println("--------------- SEWA KOSTUM ----------------");
-
         System.out.print("Masukkan kode kostum : ");
         String kode = input.nextLine();
         Kostum kostum = cariDenganKode(kode);
@@ -403,7 +407,6 @@ public class Main {
         System.out.println("--------------------------------------------------");
         kostum.tampilkanInfo();
         System.out.println("--------------------------------------------------");
-
         System.out.print("Jumlah hari sewa     : ");
         int hari = input.nextInt();
 
@@ -418,17 +421,13 @@ public class Main {
         }
 
         if (jumlah > kostum.getStok()) {
-
             System.out.println();
             System.out.println("Stok tidak mencukupi.");
             System.out.println("Stok tersedia : " + kostum.getStok());
-
             return;
         }
 
-        double total = kostum.hitungSewa(
-                hari,
-                jumlah);
+        double total = kostum.hitungSewa(hari,jumlah);
 
         kostum.setStok(kostum.getStok() - jumlah);
 

@@ -8,8 +8,8 @@ package kostumify;
  *
  * @author asus
  */
-public class Kostum {
-      //MODUL 4 - ENCAPSULATION
+//abstract class
+public abstract class Kostum {
     private String kodeKostum;
     private String namaKostum;
     private double hargaSewa;
@@ -97,11 +97,12 @@ public class Kostum {
 
         System.out.println("Kode       : " + kodeKostum);
         System.out.println("Nama       : " + namaKostum);
-        System.out.println("Harga Sewa : Rp"
-                + String.format("%.0f", hargaSewa) + "/hari");
+        System.out.println("Harga Sewa : Rp" + String.format("%.0f", hargaSewa) + "/hari");
         System.out.println("Stok       : " + stok);
         System.out.println("Kondisi    : " + kondisi);
     }
+    
+    public abstract void tampilkanJenisKostum();
 
     public double hitungSewa(int hari) {
         return hargaSewa * hari;

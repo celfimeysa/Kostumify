@@ -8,7 +8,7 @@ package kostumify;
  *
  * @author asus
  */
-public class KostumAnime extends Kostum {
+public class KostumAnime extends Kostum implements dapatDinilai {
 
     private String namaAnime;
     private String namaTokoh;
@@ -50,8 +50,17 @@ public class KostumAnime extends Kostum {
     @Override
     public void tampilkanInfo() {
         super.tampilkanInfo();
-
         System.out.println("Nama Anime    : " + namaAnime);
         System.out.println("Nama Tokoh    : " + namaTokoh);
+    }
+    
+    @Override
+    public void tampilkanJenisKostum(){
+        System.out.println("Jenis Kostum: Anime");
+    }
+    
+    @Override
+    public void beriPenilaian(){
+        System.out.println("Penilaian kostum Anime berhasil diproses.");
     }
 }

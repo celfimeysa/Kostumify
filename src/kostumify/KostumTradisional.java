@@ -9,7 +9,7 @@ package kostumify;
  * @author asus
  */
 //MODUL 5 : INHERITANCE
- public class KostumTradisional extends Kostum {
+ public class KostumTradisional extends Kostum implements dapatDisewa{
     private String asalDaerah;
     private String jenisKelamin;
 
@@ -55,5 +55,15 @@ package kostumify;
         super.tampilkanInfo();
         System.out.println("Asal Daerah  : " + asalDaerah);
         System.out.println("Jenis Kelamin: " + jenisKelamin);
+    }
+    
+    @Override
+    public void tampilkanJenisKostum(){
+        System.out.println("Jenis Kostum: Tradisional");
+    }
+    
+    @Override
+    public void prosesSewa(){
+        System.out.println("Kostum Tradisional siap disewa.");
     }
    }

@@ -8,7 +8,7 @@ package kostumify;
  *
  * @author asus
  */
-public class KostumKarakter extends Kostum {
+public class KostumKarakter extends Kostum implements dapatDisewa, dapatDinilai {
     private String namaKarakter;
     private String ukuranKostum;
 
@@ -50,5 +50,20 @@ public class KostumKarakter extends Kostum {
         super.tampilkanInfo();
         System.out.println("Nama Karakter : " + namaKarakter);
         System.out.println("Ukuran        : " + ukuranKostum);
+    }
+    
+    @Override
+    public void tampilkanJenisKostum(){
+        System.out.println("Jenis Kostum: Karakter");
+    }
+    
+    @Override
+    public void prosesSewa(){
+        System.out.println("Kostum Karakter siap disewa.");
+    }
+    
+    @Override
+    public void beriPenilaian(){
+        System.out.println("Penilaian kostum karakter berhasil diproses.");
     }
 }
