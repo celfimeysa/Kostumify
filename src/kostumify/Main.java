@@ -4,21 +4,21 @@
  */
 package kostumify;
 
-/**
- *
- * @author asus
- */
+import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.HashMap;
 
 public class Main {
 
     static Scanner input = new Scanner(System.in);
-    static Kostum[] daftarKostum = new Kostum[100];
-    static int jumlahData = 0;
+    static ArrayList<Kostum> daftarKostum = new ArrayList<>();
+    static HashMap<String, String> dataPelanggan = new HashMap<>();
+
 
     public static void main(String[] args) {
 
-        daftarKostum[jumlahData++] = new KostumTradisional(
+        daftarKostum.add(new KostumTradisional(
                 "TRD001",
                 "Kebaya Jawa",
                 75000,
@@ -26,9 +26,9 @@ public class Main {
                 "Baik",
                 "Jawa Tengah",
                 "Wanita"
-        );
+        ));
 
-        daftarKostum[jumlahData++] = new KostumTradisional(
+        daftarKostum.add(new KostumTradisional(
                 "TRD002",
                 "Baju Adat Sunda",
                 80000,
@@ -36,9 +36,9 @@ public class Main {
                 "Baik",
                 "Jawa Barat",
                 "Pria"
-        );
+        ));
 
-        daftarKostum[jumlahData++] = new KostumKarakter(
+        daftarKostum.add(new KostumKarakter(
                 "KRT001",
                 "Kostum Spiderman",
                 120000,
@@ -46,9 +46,9 @@ public class Main {
                 "Sangat Baik",
                 "Spiderman",
                 "M"
-        );
+        ));
 
-        daftarKostum[jumlahData++] = new KostumKarakter(
+        daftarKostum.add(new KostumKarakter(
                 "KRT002",
                 "Kostum Elsa",
                 110000,
@@ -56,9 +56,9 @@ public class Main {
                 "Baik",
                 "Elsa",
                 "M"
-        );
+        ));
 
-        daftarKostum[jumlahData++] = new KostumAnime(
+        daftarKostum.add(new KostumAnime(
                 "ANM001",
                 "Kostum Naruto",
                 100000,
@@ -66,8 +66,13 @@ public class Main {
                 "Baik",
                 "Naruto",
                 "Naruto Uzumaki"
-        );
-
+        ));
+        
+        dataPelanggan.put("PLG001", "Andi");
+        dataPelanggan.put("PLG002","Siti");
+        dataPelanggan.put("PLG003", "Budi");
+     
+        
         int pilihan;
 
         do {
@@ -99,8 +104,12 @@ public class Main {
                 case 5:
                     sewaKostum();
                     break;
-
+                    
                 case 6:
+                    menuPelanggan();
+                    break;
+
+                case 7:
                     System.out.println();
                     System.out.println("Terima kasih telah menggunakan Kostumify!");
                     break;
@@ -110,9 +119,11 @@ public class Main {
                     System.out.println("Pilihan menu tidak tersedia.");
             }
 
-        } while (pilihan != 6);
+        } while (pilihan != 7);
 
         input.close();
+      
+        
     }
 
     static void tampilkanMenu() {
@@ -127,7 +138,8 @@ public class Main {
         System.out.println("3. Cari Kostum");
         System.out.println("4. Simulasi Dynamic Binding");
         System.out.println("5. Sewa Kostum");
-        System.out.println("6. Keluar");
+        System.out.println("6. Kelola Data Pelanggan");
+        System.out.println("7. Keluar");
         System.out.println("--------------------------------------------------");
         System.out.println(
                 "Total kostum terdaftar : "
@@ -179,8 +191,7 @@ public class Main {
             System.out.print("Jenis kelamin     : ");
             String jenisKelamin = input.nextLine();
 
-            daftarKostum[jumlahData++]
-                    = new KostumTradisional(
+            daftarKostum.add(new KostumTradisional(
                             kode,
                             nama,
                             harga,
@@ -188,7 +199,7 @@ public class Main {
                             kondisi,
                             asalDaerah,
                             jenisKelamin
-                    );
+            ));
 
             System.out.println();
             System.out.println("Kostum tradisional berhasil ditambahkan.");
@@ -201,8 +212,7 @@ public class Main {
             System.out.print("Ukuran kostum     : ");
             String ukuran = input.nextLine();
 
-            daftarKostum[jumlahData++]
-                    = new KostumKarakter(
+            daftarKostum.add(new KostumKarakter(
                             kode,
                             nama,
                             harga,
@@ -210,7 +220,7 @@ public class Main {
                             kondisi,
                             namaKarakter,
                             ukuran
-                    );
+            ));
 
             System.out.println();
             System.out.println("Kostum karakter berhasil ditambahkan.");
@@ -223,8 +233,7 @@ public class Main {
             System.out.print("Nama tokoh        : ");
             String namaTokoh = input.nextLine();
 
-            daftarKostum[jumlahData++]
-                    = new KostumAnime(
+            daftarKostum.add(new KostumAnime(
                             kode,
                             nama,
                             harga,
@@ -232,7 +241,7 @@ public class Main {
                             kondisi,
                             namaAnime,
                             namaTokoh
-                    );
+            ));
 
             System.out.println();
             System.out.println("Kostum anime berhasil ditambahkan.");
@@ -246,20 +255,20 @@ public class Main {
         System.out.println("              DAFTAR SELURUH KOSTUM");
         System.out.println("==================================================");
 
-        if (jumlahData == 0) {
+        if (daftarKostum.isEmpty()) {
 
             System.out.println("Belum ada data kostum.");
 
         } else {
 
-            for (int i = 0; i < jumlahData; i++) {
+            for (int i = 0; i < daftarKostum.size(); i++) {
 
                 System.out.println();
                 System.out.println("Data ke-" + (i + 1));
 
                 System.out.println("--------------------------------------------------");
 
-                daftarKostum[i].tampilkanInfo();
+                daftarKostum.get(i).tampilkanInfo();
 
                 System.out.println("--------------------------------------------------");
             }
@@ -272,70 +281,81 @@ public class Main {
         System.out.println("--------------- CARI KOSTUM ----------------");
         System.out.println("1. Cari berdasarkan nama");
         System.out.println("2. Cari berdasarkan nomor data");
+        try {
+            System.out.print("Pilih: ");
+            int pilihan = input.nextInt();
+            input.nextLine();
 
-        System.out.print("Pilih: ");
-        int pilihan = input.nextInt();
-        input.nextLine();
-
-        if (pilihan == 1) {
-
+            if (pilihan == 1) {
             System.out.print("Masukkan nama kostum: ");
-
             String nama = input.nextLine();
 
             cariData(nama);
-
-        } else if (pilihan == 2) {
+            } else if (pilihan == 2) {
 
             System.out.print("Masukkan nomor data: ");
             int nomor = input.nextInt();
+
             cariData(nomor);
-
-        } else {
+            } else {
             System.out.println("Pilihan tidak tersedia.");
-        }
-    }
+            }   
 
-    static void cariData(String nama) {
+            } catch (KostumTidakDitemukanException e) {
+
+            System.out.println("Terjadi kesalahan: " + e.getMessage());
+
+            } catch (InputMismatchException e) {
+
+            System.out.println("Error: Input harus berupa angka.");
+            input.nextLine();
+    
+            } finally {
+
+            System.out.println("Proses pencarian selesai.");
+            }
+
+            }
+    
+
+    static void cariData(String nama) throws KostumTidakDitemukanException {
 
         boolean ditemukan = false;
 
-        for (int i = 0; i < jumlahData; i++) {
+        for (int i = 0; i < daftarKostum.size(); i++) {
 
-            if (daftarKostum[i]
+            if (daftarKostum.get(i)
                     .getNamaKostum()
                     .equalsIgnoreCase(nama)) {
 
                 System.out.println();
                 System.out.println("Kostum ditemukan:");
                 System.out.println("--------------------------------------------------");
-                daftarKostum[i].tampilkanInfo();
+               daftarKostum.get(i).tampilkanInfo();
                 ditemukan = true;
             }
         }
 
         if (!ditemukan) {
-
-            System.out.println("Kostum dengan nama tersebut tidak ditemukan.");
+            throw new KostumTidakDitemukanException("Kostum dengan nama '" + nama + "' tidak ditemukan.");
         }
     }
 
-    static void cariData(int nomorData) {
+    static void cariData(int nomorData)  throws KostumTidakDitemukanException {
 
         if (nomorData >= 1
-                && nomorData <= jumlahData) {
+                && nomorData <= daftarKostum.size()) {
 
             System.out.println();
             System.out.println("Kostum ditemukan:");
 
             System.out.println("--------------------------------------------------");
 
-            daftarKostum[nomorData - 1]
+            daftarKostum.get(nomorData - 1)
                     .tampilkanInfo();
 
         } else {
-
-            System.out.println("Nomor data tidak tersedia.");
+            throw new KostumTidakDitemukanException("Nomor data " + nomorData + " tidak tersedia.");
         }
     }
 
@@ -345,19 +365,19 @@ public class Main {
         System.out.println("--------- SIMULASI DYNAMIC BINDING ---------");
         System.out.println("Pilih nomor data kostum:");
 
-        for (int i = 0; i < jumlahData; i++) {
+        for (int i = 0; i < daftarKostum.size(); i++) {
 
-            System.out.println((i + 1) + ". " + daftarKostum[i].getNamaKostum());
+            System.out.println((i + 1) + ". " + daftarKostum.get(i).getNamaKostum());
         }
 
         System.out.print("Pilihan: ");
         int nomor = input.nextInt();
         input.nextLine();
 
-        if (nomor >= 1 && nomor <= jumlahData) {
+        if (nomor >= 1 && nomor <= daftarKostum.size()) {
 
             Kostum kostumDipilih
-                    = daftarKostum[nomor - 1];
+                    = daftarKostum.get(nomor - 1);
 
             prosesKostum(kostumDipilih);
 
@@ -448,16 +468,119 @@ public class Main {
 
     static Kostum cariDenganKode(String kode) {
 
-        for (int i = 0; i < jumlahData; i++) {
+        for (int i = 0; i < daftarKostum.size(); i++) {
 
-            if (daftarKostum[i]
+            if (daftarKostum.get(i)
                     .getKodeKostum()
                     .equalsIgnoreCase(kode)) {
 
-                return daftarKostum[i];
+                return daftarKostum.get(i);
             }
         }
 
         return null;
     }
+    
+    static void menuPelanggan() {
+
+    int pilihan;
+
+    do {
+        System.out.println();
+        System.out.println("========== KELOLA DATA PELANGGAN ==========");
+        System.out.println("1. Tambah Data Pelanggan");
+        System.out.println("2. Cari Data Pelanggan");
+        System.out.println("3. Tampilkan Semua Pelanggan");
+        System.out.println("4. Kembali ke Menu Utama");
+        System.out.print("Pilih: ");
+
+        pilihan = input.nextInt();
+        input.nextLine();
+
+        switch (pilihan) {
+
+            case 1:
+                tambahPelanggan();
+                break;
+
+            case 2:
+                cariPelanggan();
+                break;
+
+            case 3:
+                tampilkanPelanggan();
+                break;
+
+            case 4:
+                System.out.println("Kembali ke menu utama.");
+                break;
+
+            default:
+                System.out.println("Pilihan tidak tersedia.");
+        }
+
+    } while (pilihan != 4);
+}
+    static void tambahPelanggan() {
+
+        System.out.println();
+        System.out.println("======= TAMBAH DATA PELANGGAN =======");
+
+        System.out.print("Masukkan ID pelanggan: ");
+        String id = input.nextLine();
+
+        if (dataPelanggan.containsKey(id)) {
+            System.out.println("ID pelanggan sudah terdaftar.");
+            return;
+        }
+
+        System.out.print("Masukkan nama pelanggan: ");
+        String nama = input.nextLine();
+
+        dataPelanggan.put(id, nama);
+
+        System.out.println("Data pelanggan berhasil ditambahkan.");
+} 
+    static void cariPelanggan() {
+
+        System.out.println();
+        System.out.println("======= CARI DATA PELANGGAN =======");
+
+        System.out.print("Masukkan ID pelanggan: ");
+        String id = input.nextLine();
+
+        if (dataPelanggan.containsKey(id)) {
+
+            System.out.println();
+            System.out.println("Pelanggan ditemukan:");
+            System.out.println("ID Pelanggan : " + id);
+            System.out.println("Nama         : " + dataPelanggan.get(id));
+
+        } else {
+
+            System.out.println("Pelanggan dengan ID tersebut tidak ditemukan.");
+        }
+    }
+    
+    static void tampilkanPelanggan() {
+
+        System.out.println();
+        System.out.println("======= DAFTAR SELURUH PELANGGAN =======");
+
+        if (dataPelanggan.isEmpty()) {
+
+            System.out.println("Belum ada data pelanggan.");
+
+        } else {
+
+            for (String id : dataPelanggan.keySet()) {
+
+                System.out.println("-----------------------------------");
+                System.out.println("ID Pelanggan : " + id);
+                System.out.println("Nama         : " + dataPelanggan.get(id));
+        }
+
+        System.out.println("-----------------------------------");
+    }
+}
 }
