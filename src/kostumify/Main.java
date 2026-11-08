@@ -4,21 +4,19 @@
  */
 package kostumify;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.HashMap;
 
 public class Main {
 
     static Scanner input = new Scanner(System.in);
-    static ArrayList<Kostum> daftarKostum = new ArrayList<>();
-    static HashMap<String, String> dataPelanggan = new HashMap<>();
+    static RentalKostum rental = new RentalKostum("Kostumify");
+    static TransaksiSewa transaksi = new TransaksiSewa();
 
 
     public static void main(String[] args) {
 
-        daftarKostum.add(new KostumTradisional(
+        rental.tambahKostum(new KostumTradisional(
                 "TRD001",
                 "Kebaya Jawa",
                 75000,
@@ -28,7 +26,7 @@ public class Main {
                 "Wanita"
         ));
 
-        daftarKostum.add(new KostumTradisional(
+        rental.tambahKostum(new KostumTradisional(
                 "TRD002",
                 "Baju Adat Sunda",
                 80000,
@@ -38,7 +36,7 @@ public class Main {
                 "Pria"
         ));
 
-        daftarKostum.add(new KostumKarakter(
+        rental.tambahKostum(new KostumKarakter(
                 "KRT001",
                 "Kostum Spiderman",
                 120000,
@@ -48,7 +46,7 @@ public class Main {
                 "M"
         ));
 
-        daftarKostum.add(new KostumKarakter(
+        rental.tambahKostum(new KostumKarakter(
                 "KRT002",
                 "Kostum Elsa",
                 110000,
@@ -58,7 +56,7 @@ public class Main {
                 "M"
         ));
 
-        daftarKostum.add(new KostumAnime(
+        rental.tambahKostum(new KostumAnime(
                 "ANM001",
                 "Kostum Naruto",
                 100000,
@@ -68,10 +66,11 @@ public class Main {
                 "Naruto Uzumaki"
         ));
         
-        dataPelanggan.put("PLG001", "Andi");
-        dataPelanggan.put("PLG002","Siti");
-        dataPelanggan.put("PLG003", "Budi");
+        rental.tambahPelanggan(new Pelanggan("PLG001", "Andi"));
+        rental.tambahPelanggan(new Pelanggan("PLG002", "Siti"));
+        rental.tambahPelanggan(new Pelanggan("PLG003", "Budi"));
      
+        rental.bukaRental();
         
         int pilihan;
 
@@ -90,7 +89,7 @@ public class Main {
                     break;
 
                 case 2:
-                    tampilkanSemuaKostum();
+                    rental.lihatSemuaKostum();
                     break;
 
                 case 3:
@@ -106,10 +105,14 @@ public class Main {
                     break;
                     
                 case 6:
-                    menuPelanggan();
+                    rental.lihatSemuaPelanggan();
+                    break;
+                    
+                case 7:
+                    prosesTransaksiSewa();
                     break;
 
-                case 7:
+                case 8:
                     System.out.println();
                     System.out.println("Terima kasih telah menggunakan Kostumify!");
                     break;
@@ -119,7 +122,7 @@ public class Main {
                     System.out.println("Pilihan menu tidak tersedia.");
             }
 
-        } while (pilihan != 7);
+        } while (pilihan != 8);
 
         input.close();
       
@@ -139,7 +142,8 @@ public class Main {
         System.out.println("4. Simulasi Dynamic Binding");
         System.out.println("5. Sewa Kostum");
         System.out.println("6. Kelola Data Pelanggan");
-        System.out.println("7. Keluar");
+        System.out.println("7. Transaksi Sewa");
+        System.out.println("8. Keluar");
         System.out.println("--------------------------------------------------");
         System.out.println(
                 "Total kostum terdaftar : "
@@ -191,7 +195,7 @@ public class Main {
             System.out.print("Jenis kelamin     : ");
             String jenisKelamin = input.nextLine();
 
-            daftarKostum.add(new KostumTradisional(
+            rental.tambahKostum(new KostumTradisional(
                             kode,
                             nama,
                             harga,
@@ -212,7 +216,7 @@ public class Main {
             System.out.print("Ukuran kostum     : ");
             String ukuran = input.nextLine();
 
-            daftarKostum.add(new KostumKarakter(
+            rental.tambahKostum(new KostumKarakter(
                             kode,
                             nama,
                             harga,
@@ -233,7 +237,7 @@ public class Main {
             System.out.print("Nama tokoh        : ");
             String namaTokoh = input.nextLine();
 
-            daftarKostum.add(new KostumAnime(
+            rental.tambahKostum(new KostumAnime(
                             kode,
                             nama,
                             harga,
@@ -249,31 +253,8 @@ public class Main {
     }
 
     static void tampilkanSemuaKostum() {
-
-        System.out.println();
-        System.out.println("==================================================");
-        System.out.println("              DAFTAR SELURUH KOSTUM");
-        System.out.println("==================================================");
-
-        if (daftarKostum.isEmpty()) {
-
-            System.out.println("Belum ada data kostum.");
-
-        } else {
-
-            for (int i = 0; i < daftarKostum.size(); i++) {
-
-                System.out.println();
-                System.out.println("Data ke-" + (i + 1));
-
-                System.out.println("--------------------------------------------------");
-
-                daftarKostum.get(i).tampilkanInfo();
-
-                System.out.println("--------------------------------------------------");
-            }
-        }
-    }
+        rental.lihatSemuaKostum();
+}
 
     static void menuPencarian() {
 
@@ -319,73 +300,62 @@ public class Main {
     
 
     static void cariData(String nama) throws KostumTidakDitemukanException {
+        Kostum kostum = rental.cariKostum(nama);
 
-        boolean ditemukan = false;
+    if (kostum != null) {
+        System.out.println();
+        System.out.println("Kostum ditemukan:");
+        System.out.println("--------------------------------------------------");
+        kostum.tampilkanInfo();
+    } else {
+        throw new KostumTidakDitemukanException(
+                "Kostum dengan nama '" + nama + "' tidak ditemukan."
+        );
+    }
+    }
+    
 
-        for (int i = 0; i < daftarKostum.size(); i++) {
+    static void cariData(int nomorData) throws KostumTidakDitemukanException {
+        Kostum kostum = rental.cariKostum(nomorData);
 
-            if (daftarKostum.get(i)
-                    .getNamaKostum()
-                    .equalsIgnoreCase(nama)) {
-
-                System.out.println();
-                System.out.println("Kostum ditemukan:");
-                System.out.println("--------------------------------------------------");
-               daftarKostum.get(i).tampilkanInfo();
-                ditemukan = true;
-            }
-        }
-
-        if (!ditemukan) {
-            throw new KostumTidakDitemukanException("Kostum dengan nama '" + nama + "' tidak ditemukan.");
-        }
+    if (kostum != null) {
+        System.out.println();
+        System.out.println("Kostum ditemukan:");
+        System.out.println("--------------------------------------------------");
+        kostum.tampilkanInfo();
+    } else {
+        throw new KostumTidakDitemukanException(
+                "Nomor data " + nomorData + " tidak tersedia."
+        );
+    }
     }
 
-    static void cariData(int nomorData)  throws KostumTidakDitemukanException {
 
-        if (nomorData >= 1
-                && nomorData <= daftarKostum.size()) {
-
-            System.out.println();
-            System.out.println("Kostum ditemukan:");
-
-            System.out.println("--------------------------------------------------");
-
-            daftarKostum.get(nomorData - 1)
-                    .tampilkanInfo();
-
-        } else {
-            throw new KostumTidakDitemukanException("Nomor data " + nomorData + " tidak tersedia.");
-        }
-    }
-
-    static void simulasiDynamicBinding() {
+   static void simulasiDynamicBinding() {
 
         System.out.println();
         System.out.println("--------- SIMULASI DYNAMIC BINDING ---------");
         System.out.println("Pilih nomor data kostum:");
 
-        for (int i = 0; i < daftarKostum.size(); i++) {
-
-            System.out.println((i + 1) + ". " + daftarKostum.get(i).getNamaKostum());
+        for (int i = 0; i < rental.getJumlahKostum(); i++) {
+            System.out.println((i + 1) + ". " + rental.getKostum(i).getNamaKostum());
         }
 
         System.out.print("Pilihan: ");
         int nomor = input.nextInt();
         input.nextLine();
 
-        if (nomor >= 1 && nomor <= daftarKostum.size()) {
+        if (nomor >= 1 && nomor <= rental.getJumlahKostum()) {
 
-            Kostum kostumDipilih
-                    = daftarKostum.get(nomor - 1);
+        Kostum kostumDipilih = rental.getKostum(nomor - 1);
 
-            prosesKostum(kostumDipilih);
+        prosesKostum(kostumDipilih);
 
-        } else {
+    } else {
 
-            System.out.println("Nomor data tidak tersedia.");
-        }
+        System.out.println("Nomor data tidak tersedia.");
     }
+}
 
     static void prosesKostum(Kostum kostum) {
 
@@ -468,13 +438,12 @@ public class Main {
 
     static Kostum cariDenganKode(String kode) {
 
-        for (int i = 0; i < daftarKostum.size(); i++) {
+        for (int i = 0; i < rental.getJumlahKostum(); i++) {
 
-            if (daftarKostum.get(i)
-                    .getKodeKostum()
-                    .equalsIgnoreCase(kode)) {
+            Kostum kostum = rental.getKostum(i);
 
-                return daftarKostum.get(i);
+            if (kostum.getKodeKostum().equalsIgnoreCase(kode)) {
+                return kostum;
             }
         }
 
@@ -529,7 +498,7 @@ public class Main {
         System.out.print("Masukkan ID pelanggan: ");
         String id = input.nextLine();
 
-        if (dataPelanggan.containsKey(id)) {
+        if (rental.getPelanggan(id) != null) {
             System.out.println("ID pelanggan sudah terdaftar.");
             return;
         }
@@ -537,10 +506,11 @@ public class Main {
         System.out.print("Masukkan nama pelanggan: ");
         String nama = input.nextLine();
 
-        dataPelanggan.put(id, nama);
+        Pelanggan pelanggan = new Pelanggan(id, nama);
+        rental.tambahPelanggan(pelanggan);
 
         System.out.println("Data pelanggan berhasil ditambahkan.");
-} 
+}
     static void cariPelanggan() {
 
         System.out.println();
@@ -549,12 +519,14 @@ public class Main {
         System.out.print("Masukkan ID pelanggan: ");
         String id = input.nextLine();
 
-        if (dataPelanggan.containsKey(id)) {
+        Pelanggan pelanggan = rental.getPelanggan(id);
+
+        if (pelanggan != null) {
 
             System.out.println();
             System.out.println("Pelanggan ditemukan:");
-            System.out.println("ID Pelanggan : " + id);
-            System.out.println("Nama         : " + dataPelanggan.get(id));
+            System.out.println("ID Pelanggan : " + pelanggan.getIdPelanggan());
+            System.out.println("Nama         : " + pelanggan.getNama());
 
         } else {
 
@@ -563,24 +535,33 @@ public class Main {
     }
     
     static void tampilkanPelanggan() {
+        rental.lihatSemuaPelanggan();
+}
+    
+    static void prosesTransaksiSewa() {
 
         System.out.println();
-        System.out.println("======= DAFTAR SELURUH PELANGGAN =======");
+        System.out.println("======= PROSES TRANSAKSI SEWA =======");
+        System.out.print("Masukkan ID pelanggan: ");
+        String idPelanggan = input.nextLine();
 
-        if (dataPelanggan.isEmpty()) {
+        Pelanggan pelanggan = rental.getPelanggan(idPelanggan);
 
-            System.out.println("Belum ada data pelanggan.");
-
-        } else {
-
-            for (String id : dataPelanggan.keySet()) {
-
-                System.out.println("-----------------------------------");
-                System.out.println("ID Pelanggan : " + id);
-                System.out.println("Nama         : " + dataPelanggan.get(id));
+        if (pelanggan == null) {
+            System.out.println("Pelanggan tidak ditemukan.");
+            return;
         }
 
-        System.out.println("-----------------------------------");
-    }
+        System.out.print("Masukkan kode kostum: ");
+        String kodeKostum = input.nextLine();
+
+        Kostum kostum = cariDenganKode(kodeKostum);
+
+        if (kostum == null) {
+            System.out.println("Kostum tidak ditemukan.");
+            return;
+        }
+
+        transaksi.prosesSewa(pelanggan, kostum);
 }
 }
