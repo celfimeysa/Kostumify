@@ -3,13 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package kostumify;
+import java.io.Serializable;
 
-/**
- *
- * @author ASUS
- */
-public class Pelanggan {
+public class Pelanggan implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private String idPelanggan;
     private String nama;
 

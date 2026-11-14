@@ -111,8 +111,20 @@ public class Main {
                 case 7:
                     prosesTransaksiSewa();
                     break;
-
+                    
                 case 8:
+                    rental.simpanData();
+                    break;
+
+                case 9:
+                    rental.muatData();
+                    break;
+                    
+                case 10:
+                    rental.lihatLogTransaksi();
+                    break;
+    
+                case 11:
                     System.out.println();
                     System.out.println("Terima kasih telah menggunakan Kostumify!");
                     break;
@@ -122,7 +134,7 @@ public class Main {
                     System.out.println("Pilihan menu tidak tersedia.");
             }
 
-        } while (pilihan != 8);
+        } while (pilihan != 11);
 
         input.close();
       
@@ -143,7 +155,10 @@ public class Main {
         System.out.println("5. Sewa Kostum");
         System.out.println("6. Kelola Data Pelanggan");
         System.out.println("7. Transaksi Sewa");
-        System.out.println("8. Keluar");
+        System.out.println("8. Simpan Data");
+        System.out.println("9. Muat Data");
+        System.out.println("10. Lihat Log Transaksi");
+        System.out.println("11. Keluar");
         System.out.println("--------------------------------------------------");
         System.out.println(
                 "Total kostum terdaftar : "

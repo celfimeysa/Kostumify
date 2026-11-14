@@ -3,13 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package kostumify;
+import java.io.Serializable;
 
-/**
- *
- * @author asus
- */
-//abstract class
-public abstract class Kostum {
+public abstract class Kostum implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     private String kodeKostum;
     private String namaKostum;
     private double hargaSewa;

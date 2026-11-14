@@ -1,0 +1,5 @@
+ID Pelanggan : PLG001
+Nama         : Andi
+Kostum       : Kebaya Jawa
+Status       : Berhasil
+------------------------------

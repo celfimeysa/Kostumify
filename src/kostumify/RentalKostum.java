@@ -10,6 +10,14 @@ package kostumify;
  */
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class RentalKostum {
 
@@ -109,4 +117,58 @@ public class RentalKostum {
 
         return null;
 }
+    
+    public void simpanData() {
+        try {
+            FileOutputStream file = new FileOutputStream("data_kostumify.dat");
+            ObjectOutputStream output = new ObjectOutputStream(file);
+
+            output.writeObject(daftarKostum);
+            output.writeObject(dataPelanggan);
+
+            output.close();
+            file.close();
+
+            System.out.println("Data berhasil disimpan.");
+        }catch (IOException e) {
+            System.out.println("Gagal menyimpan data: " + e.getMessage());
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    public void muatData() {
+        try {
+            FileInputStream file = new FileInputStream("data_kostumify.dat");
+            ObjectInputStream input = new ObjectInputStream(file);
+
+            daftarKostum = (ArrayList<Kostum>) input.readObject();
+            dataPelanggan = (HashMap<String, Pelanggan>) input.readObject();
+
+            input.close();
+            file.close();
+
+            System.out.println("Data berhasil dimuat.");
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Gagal memuat data: " + e.getMessage());
+        }
+    }
+    
+        public void lihatLogTransaksi() {
+        File fileLog = new File("log_transaksi.txt");
+
+        try {
+            Scanner pembaca = new Scanner(fileLog);
+
+            System.out.println();
+            System.out.println("======= RIWAYAT TRANSAKSI =======");
+
+            while (pembaca.hasNextLine()) {
+                System.out.println(pembaca.nextLine());
+            }
+
+            pembaca.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File log transaksi belum tersedia.");
+        }
+    }
 }
